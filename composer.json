@@ -1,5 +1,5 @@
 {
-    "name": "qikker-online/lightsaml",
+    "name": "zschuessler/lightsaml",
     "license": "MIT",
     "type": "library",
     "description": "Fork of Light SAML 2.0 PHP library",
