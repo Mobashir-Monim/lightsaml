@@ -1,5 +1,5 @@
 {
-    "name": "zschuessler/lightsaml",
+    "name": "mobashirmonim/lightsaml",
     "license": "MIT",
     "type": "library",
     "description": "Fork of Light SAML 2.0 PHP library",
@@ -16,6 +16,12 @@
             "name": "Forlabs Team",
             "email": "hello@forlabs.fr",
             "homepage": "https://github.com/4Labs/",
+            "role": "Developer"
+        },
+        {
+            "name": "Mobashir Monim",
+            "email": "mobashirmonim@gmail.com",
+            "homepage": "https://github.com/Mobashir-Monim",
             "role": "Developer"
         }
     ],
@@ -34,7 +40,7 @@
         "php": ">=5.6",
         "ext-dom": "*",
         "robrichards/xmlseclibs": "~2.0|~3.0",
-        "symfony/http-foundation": "~5.0",
+        "symfony/http-foundation": "^5.0",
         "symfony/event-dispatcher": "~5.0"
     },
     "require-dev": {
