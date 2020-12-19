@@ -24,6 +24,9 @@ class IdpSsoDescriptor extends SSODescriptor
     /** @var SingleSignOnService[]|null */
     protected $singleSignOnServices;
 
+    /** @var SingleLogoutService[]|null */
+    protected $singleLogoutServices;
+
     /** @var Attribute[]|null */
     protected $attributes;
 
@@ -63,11 +66,34 @@ class IdpSsoDescriptor extends SSODescriptor
     }
 
     /**
+     * @param SingleLogoutService $singleLogoutService
+     *
+     * @return IdpSsoDescriptor
+     */
+    public function addSingleLogoutService(SingleLogoutService $singleLogoutService)
+    {
+        if (false == is_array($this->singleLogoutServices)) {
+            $this->singleLogoutServices = array();
+        }
+        $this->singleLogoutServices[] = $singleLogoutService;
+
+        return $this;
+    }
+
+    /**
      * @return SingleSignOnService[]|null
      */
     public function getAllSingleSignOnServices()
     {
         return $this->singleSignOnServices;
+    }
+
+    /**
+     * @return SingleLogoutService[]|null
+     */
+    public function getAllSingleLogoutServices()
+    {
+        return $this->singleLogoutServices;
     }
 
     /**
@@ -79,6 +105,23 @@ class IdpSsoDescriptor extends SSODescriptor
     {
         $result = array();
         foreach ($this->getAllSingleSignOnServices() as $svc) {
+            if ($svc->getLocation() == $url) {
+                $result[] = $svc;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param string $url
+     *
+     * @return SingleLogoutService[]
+     */
+    public function getAllSingleLogoutServicesByUrl($url)
+    {
+        $result = array();
+        foreach ($this->getAllSingleLogoutServices() as $svc) {
             if ($svc->getLocation() == $url) {
                 $result[] = $svc;
             }
@@ -105,6 +148,23 @@ class IdpSsoDescriptor extends SSODescriptor
     }
 
     /**
+     * @param string $binding
+     *
+     * @return SingleLogoutService[]
+     */
+    public function getAllSingleLogoutServicesByBinding($binding)
+    {
+        $result = array();
+        foreach ($this->getAllSingleLogoutServices() as $svc) {
+            if ($svc->getBinding() == $binding) {
+                $result[] = $svc;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * @param string|null $binding
      *
      * @return SingleSignOnService|null
@@ -112,6 +172,22 @@ class IdpSsoDescriptor extends SSODescriptor
     public function getFirstSingleSignOnService($binding = null)
     {
         foreach ($this->getAllSingleSignOnServices() as $svc) {
+            if (null == $binding || $svc->getBinding() == $binding) {
+                return $svc;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string|null $binding
+     *
+     * @return SingleLogoutService|null
+     */
+    public function getFirstSingleLogoutService($binding = null)
+    {
+        foreach ($this->getAllSingleLogoutServices() as $svc) {
             if (null == $binding || $svc->getBinding() == $binding) {
                 return $svc;
             }
@@ -160,6 +236,13 @@ class IdpSsoDescriptor extends SSODescriptor
                 $object->serialize($result, $context);
             }
         }
+        
+        if ($this->getAllSingleLogoutServices()) {
+            foreach ($this->getAllSingleLogoutServices() as $object) {
+                $object->serialize($result, $context);
+            }
+        }
+
         if ($this->getAllAttributes()) {
             foreach ($this->getAllAttributes() as $object) {
                 $object->serialize($result, $context);
@@ -187,6 +270,16 @@ class IdpSsoDescriptor extends SSODescriptor
             'md',
             'LightSaml\Model\Metadata\SingleSignOnService',
             'addSingleSignOnService'
+        );
+
+        $this->singleLogoutServices = array();
+        $this->manyElementsFromXml(
+            $node,
+            $context,
+            'SingleLogoutService',
+            'md',
+            'LightSaml\Model\Metadata\SingleLogoutService',
+            'addSingleLogoutService'
         );
 
         $this->attributes = array();
