@@ -237,11 +237,11 @@ class IdpSsoDescriptor extends SSODescriptor
             }
         }
         
-        if ($this->getAllSingleLogoutServices()) {
-            foreach ($this->getAllSingleLogoutServices() as $object) {
-                $object->serialize($result, $context);
-            }
-        }
+        // if ($this->getAllSingleLogoutServices()) {
+        //     foreach ($this->getAllSingleLogoutServices() as $object) {
+        //         $object->serialize($result, $context);
+        //     }
+        // }
 
         if ($this->getAllAttributes()) {
             foreach ($this->getAllAttributes() as $object) {
